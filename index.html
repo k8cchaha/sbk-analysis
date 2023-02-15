@@ -24,7 +24,10 @@
           <th>危險球時間</th>
           <th>進球時間</th>
         </tr>
-        <tr v-for="item in items">
+        <tr
+          v-for="item in items"
+          v-show="showRow(item.wagerDetail.selections[0].betTypeName)"
+        >
           <td class="center">{{item.wagerDetail.selections[0].matchID}}</td>
           <td>
             {{item.wagerDetail.selections[0].categoryName}} /
@@ -52,6 +55,7 @@
       <h2>勝率分析：</h2>
       <table border="1">
         <tr>
+          <th>過濾</th>
           <th>玩法</th>
           <th>贏</th>
           <th>輸</th>
@@ -59,6 +63,14 @@
           <th>勝率</th>
         </tr>
         <tr v-for="data in analysisData">
+          <td>
+            <input
+              type="checkbox"
+              :value="data.name"
+              v-model="checkedNames"
+              @change="checkType($event, data.name)"
+            />
+          </td>
           <td>{{data.name}}</td>
           <td>{{data.win}}</td>
           <td>{{data.lose}}</td>

@@ -4,7 +4,9 @@ createApp({
   data() {
     return {
       items: [],
-      analysisData: []
+      analysisData: [],
+      checkedNames: [],
+      allTypes: []
     };
   },
   methods: {
@@ -21,6 +23,22 @@ createApp({
 
           this.getTotalAnalysis();
         });
+    },
+    showRow(item) {
+      if (this.checkedNames.indexOf(item) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkType(e, target) {
+      if (target === "全部玩法") {
+        if (this.checkedNames.indexOf("全部玩法") > -1) {
+          this.checkedNames = this.allTypes;
+        } else {
+          this.checkedNames = [];
+        }
+      }
     },
     getTotalAnalysis() {
       if (this.analysisData.length > 0) {
@@ -41,10 +59,12 @@ createApp({
           cost: costTotal,
           payout: payoutTotal
         });
+        this.allTypes.push("全部玩法");
       }
       for (const data of this.analysisData) {
         data.winRatio = this.getWinRatio(data.win, data.lose);
         data.total = parseInt(data.payout) - parseInt(data.cost);
+        this.checkedNames.push(data.name);
       }
     },
     generateAnalysis(item) {
@@ -66,6 +86,7 @@ createApp({
           cost: 0,
           payout: 0
         });
+        this.allTypes.push(analysisName);
         idx = this.analysisData.length - 1;
       }
       if (item.totalPayout === "0") {
