@@ -23,6 +23,7 @@
           <th>比賽時間</th>
           <th>危險球時間</th>
           <th>進球時間</th>
+          <th>分析</th>
         </tr>
         <tr
           v-for="item in items"
@@ -45,10 +46,16 @@
           <td>{{item.betTime}}</td>
           <td>{{item.wagerDetail.selections[0].duration}}</td>
           <td>
-            00:00 ({{getDiffTime(item.wagerDetail.selections[0].duration,
-            '22:41')}})
+            {{item.dangerTime}}
+            {{getDiffTime(item.wagerDetail.selections[0].duration,
+            item.dangerTime)}}
           </td>
-          <td>00:00</td>
+          <td>
+            {{item.goalTime}}
+            {{getDiffTime(item.wagerDetail.selections[0].duration,
+            item.goalTime)}}
+          </td>
+          <td>{{item.winStatusName}}</td>
         </tr>
       </table>
       <hr />
