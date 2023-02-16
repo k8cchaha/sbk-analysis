@@ -14,6 +14,7 @@
       <table border="1">
         <tr>
           <th>賽事ID</th>
+          <th>注單號</th>
           <th>聯賽</th>
           <th>玩法</th>
           <th>賠率</th>
@@ -30,6 +31,7 @@
           v-show="showRow(item.wagerDetail.selections[0].betTypeName)"
         >
           <td class="center">{{item.wagerDetail.selections[0].matchID}}</td>
+          <td>{{item.wagerID}}</td>
           <td>
             {{item.wagerDetail.selections[0].categoryName}} /
             {{item.wagerDetail.selections[0].leagueName}}
@@ -55,7 +57,11 @@
             {{getDiffTime(item.wagerDetail.selections[0].duration,
             item.goalTime)}}
           </td>
-          <td>{{item.winStatusName}}</td>
+          <td
+            :class="[item.winStatus === '0' ? 'red' : item.winStatus === '1'?'green':'']"
+          >
+            {{item.winStatusName}}
+          </td>
         </tr>
       </table>
       <hr />
