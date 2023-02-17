@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>套利行為分析</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -31,7 +32,7 @@
           v-show="showRow(item.wagerDetail.selections[0].betTypeName)"
         >
           <td class="center">{{item.wagerDetail.selections[0].matchID}}</td>
-          <td>{{item.wagerID}}</td>
+          <td>{{item.wagerDisplayID}}</td>
           <td>
             {{item.wagerDetail.selections[0].categoryName}} /
             {{item.wagerDetail.selections[0].leagueName}}
@@ -48,13 +49,15 @@
           <td>{{item.wagerDetail.selections[0].duration}}</td>
           <td>{{item.betTime}}</td>
           <td>
-            {{item.dangerTime}} {{getDiffTime(item.betTime, item.dangerTime)}}
+            {{item.dangerTime}}
+            <span v-if="item.dangerDiff!==''">({{item.dangerDiff}}s)</span>
           </td>
           <td>
-            {{item.goalTime}} {{getDiffTime(item.betTime, item.goalTime)}}
+            {{item.goalTime}}
+            <span v-if="item.goalDiff!==''">({{item.goalDiff}}s)</span>
           </td>
           <td
-            :class="[item.winStatus === '0' ? 'red' : item.winStatus === '1'?'green':'']"
+            :class="[item.winStatus === 0 ? 'red' : item.winStatus === 1? 'green':'']"
           >
             {{item.winStatusName}}
           </td>
@@ -87,6 +90,27 @@
           <td>{{data.winRatio}}</td>
         </tr>
       </table>
+      <hr />
+      <h2>下注延遲分析：</h2>
+      <h3>有效分析注單筆數：{{analysisCount}}</h3>
+      <div class="analysis">
+        <div style="flex-grow: 1">
+          <canvas id="chart"></canvas>
+        </div>
+
+        <div style="width: 250px; padding: 20px">
+          <table border="1">
+            <tr>
+              <th>延遲秒數</th>
+              <th>涵蓋比例</th>
+            </tr>
+            <tr v-for="data in delayInfo">
+              <td>{{data.name}}</td>
+              <td>{{data.percentage}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="data.json"></script>
     <script type="text/javascript" src="app.js"></script>
